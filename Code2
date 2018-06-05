@@ -1,0 +1,99 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Globals : MonoBehaviour
+{
+    public string Selected;
+    //Unit placeholder
+    public int Move;
+    public int Save;
+    public int Bravery;
+    public int Wounds;
+    //Weapon placeholder
+    public string WeaponName;
+    public int Range;
+    public int Attacks;
+    public int ToHit;
+    public int ToWound;
+    public int Rend;
+    public int Damage;
+    //Damage stuff
+    public bool AttackReady;
+    public bool HitTrigger;
+    public bool WoundTrigger;
+    public bool SaveTrigger;
+    public bool DamageTrigger;
+    public int HitRoll;
+    public int WoundRoll;
+    public int SaveRoll;
+    //DiceRollder
+    public List<int> Rolls = new List<int>();
+    public int CurrentRoll;
+
+    // Use this for initialization
+    void Start()
+    {
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+    public void Attack(int Attacks, int ToHit, int ToWound, int Save,int Rend, int Damage)
+    {
+       // WeaponNamex = WeaponName;
+        //Rangex = Range;
+        //Attacksx = Attacks;
+        //ToHitx = ToHit;
+        //ToWoundx = ToWound;
+        //Rendx = Rend;
+        //Damagex = Damage;
+        for (int i = 0;i == Attacks;i++)
+        {
+            RollDice(6,1);
+            HitRoll = CurrentRoll;
+
+            if (HitRoll >= ToHit)
+            {
+                Debug.Log("It Hit");
+                RollDice(6, 1);
+                WoundRoll = CurrentRoll;
+                HitTrigger = true;
+
+                if (WoundRoll >= ToWound)
+                {
+                    Debug.Log("It Wounded");
+                    RollDice(6, 1);
+                    SaveRoll = CurrentRoll;
+                    WoundTrigger = true;
+                    HitTrigger = false;
+
+                    if (WoundRoll < Save - Rend)
+                    {
+                        Debug.Log("It damaged");
+                        DamageTrigger = true;
+                    }
+                }
+                }
+            }
+            
+        }
+    
+
+    public void RollDice(int Sides, int Amount)
+    {
+        Sides = Sides + 1;
+        Rolls.Clear();
+        for (int i = 0; i < Amount;)
+        {
+            CurrentRoll = Random.Range(1, Sides);
+            Rolls.Add(CurrentRoll);
+            i++;
+
+        }
+    }
+}
+   
+
