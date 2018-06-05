@@ -1,0 +1,61 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class SlannStarmaster : MonoBehaviour {
+    public bool HasDied;
+    public Slap TheSlapper;
+    public Globals TheGlobals;
+    public int Wounds;
+    public Rigidbody TheModel;
+    public int Speed;
+    public int Save;
+	// Use this for initialization
+	void Start () {
+        Speed = 3000;
+        Wounds = 15;
+        HasDied = false;
+        Save = 4;
+	}
+	public void Perish()
+    {
+        if (Wounds <= 0)
+        {
+            if (HasDied == false) {
+                TheModel.isKinematic = false;
+                TheModel.AddForce(transform.forward * Speed);                          //AddForce(camera.transform.forward * speed);
+                Debug.Log("OwO");
+                HasDied = true;
+            }
+
+        }
+    }
+    public void TakeDamage(int Amount)
+    {
+        Wounds = Wounds - Amount;
+        Debug.Log(Wounds);
+
+    }
+    // Update is called once per frame
+    private void OnMouseUp()
+    {
+        if (TheGlobals.AttackReady == true)
+        {
+            Debug.Log("Check");
+            TheGlobals.Attack(TheGlobals.Attacks, TheGlobals.ToHit, TheGlobals.ToWound, TheGlobals.Save, TheGlobals.Rend, TheGlobals.Damage);
+            if (TheGlobals.DamageTrigger == true)
+            {
+                Debug.Log("pew");
+                TakeDamage(TheGlobals.Damage);
+            }
+            //TakeDamage(TheGlobals.Attack);
+            TheGlobals.AttackReady = false;
+        }
+    }
+    void Update()
+    {
+        Perish();
+    }
+}
+
+
